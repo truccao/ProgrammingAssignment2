@@ -1,31 +1,18 @@
 ## There are two keyed functions defined in this source member:
 ##
-## 1. makeCacheMatrix - is called to cache a matrix into memory
-## 2. cacheSove - is called to compute and to return the inverse matrix of 
+## 1. makeCacheMatrix - is called to cache a matrix into memory - under a form of the "list" object
+## 2. cacheSove - is called to compute and to return the inverse form of 
 ##    a matrix
 ##
-## Sample of execution:
-## ====================
-## x2 <- matrix(c(1,0,5,2,1,6,3,4,0), nrow = 3, ncol =3)
-## y2 <- makeCacheMatrix(x2)
-## cacheSolve(y2)
+## Notes: Please see the unit test code stored in testCacheMatrix.R
 ##
-## Expected output:
-## ================
-## about to compute the inverted matrix of the submitted matrix
-## [,1] [,2] [,3]
-## [1,]  -24   18    5
-## [2,]   20  -15   -4
-## [3,]   -5    4    1
-
-
+##
 ## This function - makeCacheMatrix is defined to accept a matrix as its input
 ## will save it into a cache object under a matrix form. Below is its logic:
 ## 1. set the value of the matrix
 ## 2. get the value of the maxtrix
-## 3. set the value of the inverted matrix
-## 4. get the value of the inverted matrix 
-
+## 3. set the value of the matrix inverse
+## 4. get the value of the matrix inverse 
 
 makeCacheMatrix <- function(x = matrix()) {
   
@@ -35,29 +22,28 @@ makeCacheMatrix <- function(x = matrix()) {
         m <<- NULL
     }
     get <- function() x
-    setInvertedMatrix <- function(solve) m <<- solve
-    getInvertedMatrix <- function() m
-    return(list(set = set, get = get, setInvertedMatrix = setInvertedMatrix, getInvertedMatrix = getInvertedMatrix))
+    setMatrixInverse <- function(solve) m <<- solve
+    getMatrixInverse <- function() m
+    return(list(set = set, get = get, setMatrixInverse = setMatrixInverse, getMatrixInverse = getMatrixInverse))
 
 }
 ## This function - cacheSolve will perform the following logic:
 ## 1. To compute the inverse of the special "matrix" returned by the function - makeCacheMatrix
-## 2. However, the input matrix is already inverted then it will retrieve its inverted matrix from 
-##    the cache.
-## 3. Return the inverted matrix
+## 2. However, the input matrix is already inversed then it will retrieve its matrix inverse from the cache object..
+## 3. Return the matrix inverse
 
 cacheSolve <- function(x, ...) {
   
-    invertedMatrix <- x$getInvertedMatrix()
-    if(!is.null(invertedMatrix)) {
+    matrixInverse <- x$getMatrixInverse()
+    if(!is.null(matrixInverse)) {
       message("getting cached Inverted Matrix")
-      return(invertedMatrix)
+      return(matrixInverse)
     }
     else {
-      message("about to compute the inverted matrix of the submitted matrix")
+      message("about to compute the inverse of the submitted matrix")
     }
     data <- x$get()
-    invertedMatrix <- solve(data, ...)
-    x$setInvertedMatrix(invertedMatrix)
-    return(invertedMatrix)
+    matrixInverse <- solve(data, ...)
+    x$setMatrixInverse(matrixInverse)
+    return(matrixInverse)
 }
